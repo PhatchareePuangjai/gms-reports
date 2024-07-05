@@ -44,6 +44,10 @@ export class PaymentTermViewModel {
     this.no = no;
     this.startDate = startDate;
     this.endDate = endDate;
+
+    for (let i = 0; i < 500; i++) {
+      this.addRow();
+    }
   }
 
   setBudgetCode(budgetCode: string) {
@@ -51,7 +55,8 @@ export class PaymentTermViewModel {
   }
 
   addRow() {
-    const lastRowBankBalance = this.rows.at(-1)?.bankBalance ?? null;
-    this.rows.push(new PaymentRowViewModel(lastRowBankBalance));
+    const previousRow = this.rows.at(-1) || null;
+
+    this.rows.push(new PaymentRowViewModel(previousRow));
   }
 }

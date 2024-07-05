@@ -22,6 +22,7 @@ export const CashJournal: React.FC<Props> = ({
 
   return (
     <div>
+      {/* <Observer>{() => <pre>{viewModel.tJson()}</pre>}</Observer> */}
       <h1>สมุดรายวัน รับ - จ่าย</h1>
 
       <table>
@@ -48,8 +49,8 @@ export const CashJournal: React.FC<Props> = ({
             <th>ฝาก</th>
             <th>ถอน</th>
             <th>คงเหลือ</th>
-            <th>ฝาก</th>
-            <th>ถอน</th>
+            <th>รับ</th>
+            <th>จ่าย</th>
             <th>คงเหลือ</th>
           </tr>
         </thead>
@@ -491,11 +492,7 @@ export const CashJournal: React.FC<Props> = ({
                                         <input
                                           type="number"
                                           value={row.cashBalance || ""}
-                                          onChange={(e) =>
-                                            row.setCashBalance(
-                                              Number(e.currentTarget.value)
-                                            )
-                                          }
+                                          disabled
                                         />
                                       )}
                                     </Observer>
