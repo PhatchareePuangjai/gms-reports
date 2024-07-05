@@ -6,11 +6,11 @@ type BalanceForward = {
 
   bankDeposit?: number;
   bankWithdrawal?: number;
-  bankRemaining?: number;
+  bankBalance?: number;
 
   cashReceipts?: number;
   cashDisbursements?: number;
-  cashRemaining?: number;
+  cashBalance?: number;
 
   advancePaymentReceivables?: number;
   creditor?: number;
@@ -44,11 +44,6 @@ export class PaymentTermViewModel {
     this.no = no;
     this.startDate = startDate;
     this.endDate = endDate;
-
-    // default rows
-    for (let i = 0; i < 5; i++) {
-      this.rows.push(new PaymentRowViewModel());
-    }
   }
 
   setBudgetCode(budgetCode: string) {
@@ -56,6 +51,7 @@ export class PaymentTermViewModel {
   }
 
   addRow() {
-    this.rows.push(new PaymentRowViewModel());
+    const lastRowBankBalance = this.rows.at(-1)?.bankBalance ?? null;
+    this.rows.push(new PaymentRowViewModel(lastRowBankBalance));
   }
 }

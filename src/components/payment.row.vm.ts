@@ -15,25 +15,24 @@ export class PaymentRowViewModel {
   budgetCode: string = "";
   category?: PaymentRowCategory = undefined;
 
-  bankDeposit?: number = undefined;
-  bankWithdrawal?: number = undefined;
-  bankRemaining?: number = undefined;
+  bankDeposit: number | null = null;
+  bankWithdrawal: number | null = null;
 
-  cashReceipts?: number = undefined;
-  cashDisbursements?: number = undefined;
-  cashRemaining?: number = undefined;
+  cashReceipts: number | null = null;
+  cashDisbursements: number | null = null;
+  cashBalance: number | null = null;
 
-  advancePaymentReceivables?: number = undefined;
-  creditor?: number = undefined;
-  expenses?: number = undefined;
+  advancePaymentReceivables: number | null = null;
+  creditor: number | null = null;
+  expenses: number | null = null;
 
-  paymentTermReceipts?: number = undefined;
-  withholdingTax?: number = undefined;
-  bankInterestIncome?: number = undefined;
-  otherIncome?: number = undefined;
+  paymentTermReceipts: number | null = null;
+  withholdingTax: number | null = null;
+  bankInterestIncome: number | null = null;
+  otherIncome: number | null = null;
   remark?: string = "";
 
-  constructor() {
+  constructor(readonly bankBalanceForward: number | null) {
     makeObservable(this, {
       date: observable,
       documentNo: observable,
@@ -42,10 +41,9 @@ export class PaymentRowViewModel {
       category: observable,
       bankDeposit: observable,
       bankWithdrawal: observable,
-      bankRemaining: observable,
       cashReceipts: observable,
       cashDisbursements: observable,
-      cashRemaining: observable,
+      cashBalance: observable,
       advancePaymentReceivables: observable,
       creditor: observable,
       expenses: observable,
@@ -58,9 +56,37 @@ export class PaymentRowViewModel {
       setDate: action,
       setDocumentNo: action,
       setDescription: action,
+      setBudgetCode: action,
+      setCategory: action,
+      setBankDeposit: action,
+      setBankWithdrawal: action,
+      setCashReceipts: action,
+      setCashDisbursements: action,
+      setCashBalance: action,
+      setAdvancePaymentReceivables: action,
+      setCreditor: action,
+      setExpenses: action,
+      setPaymentTermReceipts: action,
+      setWithholdingTax: action,
+      setBankInterestIncome: action,
+      setOtherIncome: action,
+      setRemark: action,
 
+      bankBalance: computed,
       difference: computed,
     });
+  }
+
+  get bankBalance() {
+    return (
+      Number(this.bankBalanceForward) +
+      Number(this.bankDeposit) -
+      Number(this.bankWithdrawal)
+    );
+  }
+
+  get difference() {
+    return Number(this.bankDeposit) - Number(this.bankWithdrawal);
   }
 
   setDate(date: string) {
@@ -90,10 +116,6 @@ export class PaymentRowViewModel {
     this.bankWithdrawal = bankWithdrawal;
   }
 
-  setBankRemaining(bankRemaining: number) {
-    this.bankRemaining = bankRemaining;
-  }
-
   setCashReceipts(cashReceipts: number) {
     this.cashReceipts = cashReceipts;
   }
@@ -102,8 +124,8 @@ export class PaymentRowViewModel {
     this.cashDisbursements = cashDisbursements;
   }
 
-  setCashRemaining(cashRemaining: number) {
-    this.cashRemaining = cashRemaining;
+  setCashBalance(cashBalance: number) {
+    this.cashBalance = cashBalance;
   }
 
   setAdvancePaymentReceivables(advancePaymentReceivables: number) {
@@ -136,9 +158,5 @@ export class PaymentRowViewModel {
 
   setRemark(remark: string) {
     this.remark = remark;
-  }
-
-  get difference() {
-    return this.bankDeposit! - this.bankWithdrawal!;
   }
 }
